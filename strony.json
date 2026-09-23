@@ -1,0 +1,10 @@
+[
+  { "name": "Hydro Gym", "url": "https://hydrogym.pl/kontakt/", "mail": "" },
+  { "name": "Vorza Gym", "url": "https://vorzagym.pl/kontakt.html", "mail": "" },
+  { "name": "Alpha Fitness (pre-sale)", "url": "https://alphafitness.pl/", "mail": "kontakt@alphafitness.pl" },
+  { "name": "Corner Gym (wejsciowka)", "url": "https://cornergym.pl/darmowa-wejsciowka/", "mail": "hello@cornergym.pl" },
+  { "name": "Progres Lomza", "url": "https://progresgym.pl/lomza/kontakt/", "mail": "" },
+  { "name": "Progres Walbrzych", "url": "https://progresgym.pl/walbrzych/kontakt/", "mail": "" },
+  { "name": "B-FIT Zarow", "url": "https://bbfit.pl/", "mail": "biuro@bbfit.pl" },
+  { "name": "Forma Gym", "url": "https://forma-gym.pl/", "mail": "kontakt@forma-gym.pl" }
+]

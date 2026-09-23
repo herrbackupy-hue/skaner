@@ -1,0 +1,21 @@
+{
+  "name": "form-checker-v2",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Automatyczny checker formularzy kontaktowych (Playwright) - testuje KAZDY formularz na stronie",
+  "type": "commonjs",
+  "scripts": {
+    "check": "node check.js",
+    "dry": "node check.js --dry",
+    "server": "node server.js",
+    "publish": "node publish.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "basic-ftp": "^6.2.1",
+    "imapflow": "^2.0.6",
+    "playwright": "^1.63.0"
+  }
+}

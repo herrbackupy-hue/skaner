@@ -1,0 +1,43 @@
+{
+  "code": "TEST-260923-ZW2S",
+  "dry": true,
+  "at": "23.09.2026, 15:27:53",
+  "mail": {
+    "checked": false,
+    "reason": "Tryb --dry: nic nie wyslano, nie ma czego szukac."
+  },
+  "results": [
+    {
+      "name": "Hydro Gym",
+      "url": "https://hydrogym.pl/kontakt/",
+      "mail": "",
+      "checkedAt": "23.09.2026, 15:27:30",
+      "forms": [
+        {
+          "index": 0,
+          "heading": "Zapisz się i zarezerwuj karnet w najlepszej cenie!",
+          "id": "contactForm",
+          "action": "https://hydrogym.pl/send_email.php",
+          "method": "POST",
+          "fields": 5,
+          "hasCaptcha": false,
+          "beforePng": "hydro-gym-f1-przed.png",
+          "filled": [
+            "honeypot-puste:website",
+            "name",
+            "email",
+            "tel",
+            "check:privacyCheck"
+          ],
+          "filledPng": "hydro-gym-f1-wypelniony.png",
+          "verdict": "DRY",
+          "detail": "Tryb --dry: wypelniono, nie wyslano."
+        }
+      ],
+      "verdict": "DRY",
+      "detail": "Tryb probny.",
+      "title": "Kontakt | Hydro Gym & Pilates",
+      "formsFound": 1
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "code": "TEST-260923-OH63",
+  "dry": true,
+  "at": "23.09.2026, 15:49:01",
+  "mail": {
+    "checked": false
+  },
+  "results": [
+    {
+      "name": "B-FIT Zarow",
+      "url": "https://bbfit.pl/",
+      "mail": "biuro@bbfit.pl",
+      "checkedAt": "23.09.2026, 15:48:40",
+      "forms": [
+        {
+          "index": 0,
+          "heading": "KONTAKT\nDOŁĄCZ\nDO NAS\n\nWystartowała druga pula sprzedaży karnetów — promocyjny Karnet OPEN 169 zł tylko do 30 września. ",
+          "id": "contactForm",
+          "action": "https://bbfit.pl/form.php",
+          "method": "POST",
+          "fields": 7,
+          "hasCaptcha": false,
+          "beforePng": "b-fit-zarow-f1-przed.png",
+          "filled": [
+            "name",
+            "email",
+            "tel",
+            "check:zgoda_privacy"
+          ],
+          "filledPng": "b-fit-zarow-f1-wypelniony.png",
+          "verdict": "DRY",
+          "detail": "Tryb --dry: wypelniono, nie wyslano."
+        }
+      ],
+      "verdict": "DRY",
+      "detail": "Tryb probny.",
+      "title": "B-FIT Żarów — NanoGym + Siłownia | Klub już otwarty",
+      "formsFound": 1
+    }
+  ]
+}
