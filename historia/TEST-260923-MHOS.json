@@ -1,0 +1,293 @@
+{
+  "code": "TEST-260923-MHOS",
+  "dry": true,
+  "at": "23.09.2026, 14:56:33",
+  "mail": {
+    "checked": false
+  },
+  "results": [
+    {
+      "name": "Hydro Gym",
+      "url": "https://hydrogym.pl/kontakt/",
+      "mail": "",
+      "checkedAt": "23.09.2026, 14:54:02",
+      "forms": [
+        {
+          "index": 0,
+          "heading": "Zapisz się i zarezerwuj karnet w najlepszej cenie!",
+          "id": "contactForm",
+          "action": "https://hydrogym.pl/send_email.php",
+          "method": "POST",
+          "fields": 5,
+          "hasCaptcha": false,
+          "beforePng": "hydro-gym-f1-przed.png",
+          "filled": [
+            "honeypot-puste:website",
+            "name",
+            "email",
+            "tel",
+            "check:privacyCheck"
+          ],
+          "filledPng": "hydro-gym-f1-wypelniony.png",
+          "verdict": "DRY",
+          "detail": "Tryb --dry: wypelniono, nie wyslano."
+        }
+      ],
+      "verdict": "DRY",
+      "detail": "Tryb probny.",
+      "title": "Kontakt | Hydro Gym & Pilates",
+      "formsFound": 1
+    },
+    {
+      "name": "Vorza Gym",
+      "url": "https://vorzagym.pl/kontakt.html",
+      "mail": "",
+      "checkedAt": "23.09.2026, 14:54:20",
+      "forms": [
+        {
+          "index": 0,
+          "heading": "SKONTAKTUJ SIĘ Z NAMI",
+          "id": "contactForm",
+          "action": "https://vorzagym.pl/kontakt.html",
+          "method": "GET",
+          "fields": 7,
+          "hasCaptcha": false,
+          "beforePng": "vorza-gym-f1-przed.png",
+          "filled": [
+            "honeypot-puste:website",
+            "name",
+            "email",
+            "tel",
+            "select:interest=probne-wejscie",
+            "check:privacyCheck"
+          ],
+          "filledPng": "vorza-gym-f1-wypelniony.png",
+          "verdict": "DRY",
+          "detail": "Tryb --dry: wypelniono, nie wyslano."
+        },
+        {
+          "index": 1,
+          "heading": "",
+          "id": "recruitmentForm",
+          "action": "https://vorzagym.pl/kontakt.html",
+          "method": "GET",
+          "fields": 4,
+          "hasCaptcha": false,
+          "beforePng": "vorza-gym-f2-przed.png",
+          "filled": [],
+          "filledPng": "vorza-gym-f2-wypelniony.png",
+          "verdict": "UKRYTY",
+          "detail": "Nie dalo sie wypelnic zadnego pola (zakladka/popup/pola warunkowe?) - do testu recznego."
+        }
+      ],
+      "verdict": "RECZNIE",
+      "detail": "Formularze z CAPTCHA / ukryte (popup) do testu recznego.",
+      "title": "Kontakt | VORZA GYM",
+      "formsFound": 2
+    },
+    {
+      "name": "Alpha Fitness (pre-sale)",
+      "url": "https://alphafitness.pl/",
+      "mail": "kontakt@alphafitness.pl",
+      "checkedAt": "23.09.2026, 14:54:45",
+      "forms": [
+        {
+          "index": 0,
+          "heading": "WEJDŹ JAKO\nPIERWSZY",
+          "id": "psForm",
+          "action": "https://alphafitness.pl/send_email.php",
+          "method": "POST",
+          "fields": 4,
+          "hasCaptcha": false,
+          "beforePng": "alpha-fitness-pre-sale-f1-przed.png",
+          "filled": [
+            "name",
+            "email",
+            "tel",
+            "check:ps-consent"
+          ],
+          "filledPng": "alpha-fitness-pre-sale-f1-wypelniony.png",
+          "verdict": "DRY",
+          "detail": "Tryb --dry: wypelniono, nie wyslano."
+        }
+      ],
+      "verdict": "DRY",
+      "detail": "Tryb probny.",
+      "title": "ALPHA FITNESS — Nowy Sącz · Otwarcie 09.2026",
+      "formsFound": 1
+    },
+    {
+      "name": "Corner Gym (wejsciowka)",
+      "url": "https://cornergym.pl/darmowa-wejsciowka/",
+      "mail": "hello@cornergym.pl",
+      "checkedAt": "23.09.2026, 14:55:02",
+      "forms": [
+        {
+          "index": 0,
+          "heading": "JAK TO DZIAŁA\nTrzy kroki i trenujesz\n\n1. Wypełnij formularz — wybierz klub i zostaw kontakt.\n\n2. Odbierz potwierdzenie —",
+          "id": "",
+          "action": "https://formsubmit.co/hello@cornergym.pl",
+          "method": "POST",
+          "fields": 9,
+          "hasCaptcha": true,
+          "beforePng": "corner-gym-wejsciowka-f1-przed.png",
+          "filled": [
+            "select:klub=Kraków — Mateczny (ul. Rydlówka 38)",
+            "name",
+            "email",
+            "tel",
+            "check:zgoda"
+          ],
+          "filledPng": "corner-gym-wejsciowka-f1-wypelniony.png",
+          "verdict": "DRY",
+          "detail": "Tryb --dry: wypelniono, nie wyslano."
+        },
+        {
+          "index": 1,
+          "heading": "",
+          "id": "",
+          "action": "https://cornergym.pl/darmowa-wejsciowka/",
+          "method": "GET",
+          "fields": 1,
+          "hasCaptcha": false,
+          "beforePng": "corner-gym-wejsciowka-f2-przed.png",
+          "filled": [
+            "msg"
+          ],
+          "filledPng": "corner-gym-wejsciowka-f2-wypelniony.png",
+          "verdict": "DRY",
+          "detail": "Tryb --dry: wypelniono, nie wyslano."
+        }
+      ],
+      "verdict": "DRY",
+      "detail": "Tryb probny.",
+      "title": "Darmowa wejściówka — Corner Gym | wypróbuj siłownię za rogiem",
+      "formsFound": 2
+    },
+    {
+      "name": "Progres Lomza",
+      "url": "https://progresgym.pl/lomza/kontakt/",
+      "mail": "",
+      "checkedAt": "23.09.2026, 14:55:26",
+      "forms": [
+        {
+          "index": 0,
+          "heading": "Zostaw nam swoje dane, abyśmy mogli skontaktować się z Tobą w celu ustalenia dogodnego terminu Twojej pierwszej wizyty l",
+          "id": "contactFormEl",
+          "action": "https://progresgym.pl/send_email.php",
+          "method": "POST",
+          "fields": 6,
+          "hasCaptcha": false,
+          "beforePng": "progres-lomza-f1-przed.png",
+          "filled": [
+            "name",
+            "tel",
+            "email",
+            "check:zgoda_warunki"
+          ],
+          "filledPng": "progres-lomza-f1-wypelniony.png",
+          "verdict": "DRY",
+          "detail": "Tryb --dry: wypelniono, nie wyslano."
+        }
+      ],
+      "verdict": "DRY",
+      "detail": "Tryb probny.",
+      "title": "Kontakt | PROGRES GYM Łomża",
+      "formsFound": 1
+    },
+    {
+      "name": "Progres Walbrzych",
+      "url": "https://progresgym.pl/walbrzych/kontakt/",
+      "mail": "",
+      "checkedAt": "23.09.2026, 14:55:43",
+      "forms": [
+        {
+          "index": 0,
+          "heading": "Zostaw nam swoje dane, abyśmy mogli skontaktować się z Tobą w celu ustalenia dogodnego terminu Twojej pierwszej wizyty l",
+          "id": "contactFormEl",
+          "action": "https://progresgym.pl/send_email.php",
+          "method": "POST",
+          "fields": 6,
+          "hasCaptcha": false,
+          "beforePng": "progres-walbrzych-f1-przed.png",
+          "filled": [
+            "name",
+            "tel",
+            "email",
+            "check:zgoda_warunki"
+          ],
+          "filledPng": "progres-walbrzych-f1-wypelniony.png",
+          "verdict": "DRY",
+          "detail": "Tryb --dry: wypelniono, nie wyslano."
+        }
+      ],
+      "verdict": "DRY",
+      "detail": "Tryb probny.",
+      "title": "Kontakt | PROGRES GYM Wałbrzych",
+      "formsFound": 1
+    },
+    {
+      "name": "B-FIT Zarow",
+      "url": "https://bbfit.pl/",
+      "mail": "biuro@bbfit.pl",
+      "checkedAt": "23.09.2026, 14:56:00",
+      "forms": [
+        {
+          "index": 0,
+          "heading": "KONTAKT\nDOŁĄCZ\nDO NAS\n\nWystartowała druga pula sprzedaży karnetów — promocyjny Karnet OPEN 169 zł tylko do 30 września. ",
+          "id": "contactForm",
+          "action": "https://bbfit.pl/form.php",
+          "method": "POST",
+          "fields": 7,
+          "hasCaptcha": false,
+          "beforePng": "b-fit-zarow-f1-przed.png",
+          "filled": [
+            "name",
+            "email",
+            "tel",
+            "check:zgoda_privacy"
+          ],
+          "filledPng": "b-fit-zarow-f1-wypelniony.png",
+          "verdict": "DRY",
+          "detail": "Tryb --dry: wypelniono, nie wyslano."
+        }
+      ],
+      "verdict": "DRY",
+      "detail": "Tryb probny.",
+      "title": "B-FIT Żarów — NanoGym + Siłownia | Klub już otwarty",
+      "formsFound": 1
+    },
+    {
+      "name": "Forma Gym",
+      "url": "https://forma-gym.pl/",
+      "mail": "kontakt@forma-gym.pl",
+      "checkedAt": "23.09.2026, 14:56:16",
+      "forms": [
+        {
+          "index": 0,
+          "heading": "KONTAKT\nZacznij swoją Formę już dziś.\n\nNajszybszą drogą jest rezerwacja treningu próbnego. Wypełnij formularz lub zadzwo",
+          "id": "",
+          "action": "https://forma-gym.pl/formularz.php",
+          "method": "POST",
+          "fields": 7,
+          "hasCaptcha": false,
+          "beforePng": "forma-gym-f1-przed.png",
+          "filled": [
+            "name",
+            "email",
+            "tel",
+            "msg",
+            "check:zgoda_rodo"
+          ],
+          "filledPng": "forma-gym-f1-wypelniony.png",
+          "verdict": "DRY",
+          "detail": "Tryb --dry: wypelniono, nie wyslano."
+        }
+      ],
+      "verdict": "DRY",
+      "detail": "Tryb probny.",
+      "title": "FORMA GYM Strawczyn - Ruch · Siła · Równowaga | Klub treningowy Nano Gym",
+      "formsFound": 1
+    }
+  ]
+}
