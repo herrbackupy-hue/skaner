@@ -1,0 +1,79 @@
+# Automatyczny test formularzy: GitHub liczy, Ty ogladasz wyniki w przegladarce.
+name: Test formularzy
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Tylko dry-run (bez wysylki TEST)'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Instalacja zaleznosci i przegladarek
+        run: |
+          npm ci --no-audit --no-fund
+          npx playwright install chromium
+          sudo npx playwright install-deps chromium
+          google-chrome --version || true
+          which xvfb-run || true
+
+      - name: Test formularzy (na serwerze GitHub)
+        env:
+          USE_REAL_CHROME: '1'
+        run: |
+          if [ "${{ inputs.dry_run }}" = "true" ]; then EXTRA="--dry"; else EXTRA=""; fi
+          xvfb-run -a node check.js $EXTRA
+
+      - name: Eksport strony z wynikami
+        run: node publish.js
+
+      - name: Historia do repo (zeby nie ginela)
+        run: |
+          git config user.name "checker-bot"
+          git config user.email "checker-bot@users.noreply.github.com"
+          git add historia/ || true
+          git diff --cached --quiet || git commit -m "Historia runu $(date -u +%F)" || true
+          git push || true
+
+      - name: Publikacja na Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
