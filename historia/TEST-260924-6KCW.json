@@ -1,0 +1,554 @@
+{
+  "code": "TEST-260924-6KCW",
+  "dry": false,
+  "at": "24.09.2026, 10:44:21",
+  "mail": {
+    "checked": false
+  },
+  "results": [
+    {
+      "name": "Hydro Gym",
+      "url": "https://hydrogym.pl/kontakt/",
+      "mail": "",
+      "checkedAt": "24.09.2026, 10:38:47",
+      "forms": [
+        {
+          "index": 0,
+          "heading": "Zapisz się i zarezerwuj karnet w najlepszej cenie!",
+          "id": "contactForm",
+          "action": "https://hydrogym.pl/send_email.php",
+          "method": "POST",
+          "fields": 5,
+          "hasCaptcha": false,
+          "beforePng": "hydro-gym-f1-przed.png",
+          "filled": [
+            "honeypot-puste:website",
+            "name",
+            "email",
+            "tel",
+            "check:privacyCheck"
+          ],
+          "filledPng": "hydro-gym-f1-wypelniony.png",
+          "submitVia": "click",
+          "requests": [
+            "GET 200 https://fonts.googleapis.com/css?family=Google+Sans+Text:400&text=%E2%86%90%E2%86%92%E2%86%91%E2%86%93&lang=pl",
+            "GET 200 https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Google+Sans:400,500,700|Google+Sans+Text:400,50",
+            "POST 200 https://maps.googleapis.com/$rpc/google.internal.maps.mapsjs.v1.MapsJsInternalService/GetViewportInfo",
+            "POST 200 https://hydrogym.pl/send_email.php"
+          ],
+          "badStatus": false,
+          "successHit": true,
+          "errorHit": false,
+          "afterPng": "hydro-gym-f1-po.png",
+          "finalUrl": "https://hydrogym.pl/kontakt/",
+          "urlSuccess": false,
+          "verdict": "OK",
+          "detail": "Wykryto komunikat sukcesu, brak bledow HTTP."
+        }
+      ],
+      "verdict": "OK",
+      "detail": "Wszystkie formularze: sukces.",
+      "title": "Kontakt | Hydro Gym & Pilates",
+      "formsFound": 1
+    },
+    {
+      "name": "Vorza Gym",
+      "url": "https://vorzagym.pl/kontakt/",
+      "mail": "",
+      "checkedAt": "24.09.2026, 10:39:15",
+      "forms": [
+        {
+          "index": 0,
+          "heading": "SKONTAKTUJ SIĘ Z NAMI",
+          "id": "contactForm",
+          "action": "https://vorzagym.pl/kontakt/",
+          "method": "GET",
+          "fields": 7,
+          "hasCaptcha": false,
+          "beforePng": "vorza-gym-f1-przed.png",
+          "filled": [
+            "honeypot-puste:website",
+            "name",
+            "email",
+            "tel",
+            "select:interest=probne-wejscie",
+            "check:privacyCheck"
+          ],
+          "filledPng": "vorza-gym-f1-wypelniony.png",
+          "submitVia": "click",
+          "requests": [
+            "POST 200 https://maps.googleapis.com/$rpc/google.internal.maps.mapsjs.v1.MapsJsInternalService/GetViewportInfo",
+            "POST 200 https://vorzagym.pl/send_email.php",
+            "GET 200 https://fonts.googleapis.com/css?family=Google+Sans+Text:400&text=%E2%86%90%E2%86%92%E2%86%91%E2%86%93&lang=pl",
+            "GET 200 https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Google+Sans:400,500,700|Google+Sans+Text:400,50",
+            "POST 200 https://maps.googleapis.com/$rpc/google.internal.maps.mapsjs.v1.MapsJsInternalService/GetViewportInfo"
+          ],
+          "badStatus": false,
+          "successHit": true,
+          "errorHit": false,
+          "afterPng": "vorza-gym-f1-po.png",
+          "finalUrl": "https://vorzagym.pl/kontakt/",
+          "urlSuccess": false,
+          "verdict": "OK",
+          "detail": "Wykryto komunikat sukcesu, brak bledow HTTP."
+        },
+        {
+          "index": 1,
+          "heading": "",
+          "id": "recruitmentForm",
+          "action": "https://vorzagym.pl/kontakt/",
+          "method": "GET",
+          "fields": 4,
+          "hasCaptcha": false,
+          "beforePng": "vorza-gym-f2-przed.png",
+          "filled": [],
+          "filledPng": "vorza-gym-f2-wypelniony.png",
+          "verdict": "UKRYTY",
+          "detail": "Nie dalo sie wypelnic zadnego pola (zakladka/popup/pola warunkowe?) - do testu recznego."
+        }
+      ],
+      "verdict": "RECZNIE",
+      "detail": "Formularze z CAPTCHA / ukryte (popup) do testu recznego.",
+      "title": "Kontakt | VORZA GYM",
+      "formsFound": 2
+    },
+    {
+      "name": "Alpha Fitness (pre-sale)",
+      "url": "https://alphafitness.pl/",
+      "mail": "kontakt@alphafitness.pl",
+      "checkedAt": "24.09.2026, 10:39:48",
+      "forms": [
+        {
+          "index": 0,
+          "heading": "WEJDŹ JAKO\nPIERWSZY",
+          "id": "psForm",
+          "action": "https://alphafitness.pl/send_email.php",
+          "method": "POST",
+          "fields": 4,
+          "hasCaptcha": false,
+          "beforePng": "alpha-fitness-pre-sale-f1-przed.png",
+          "filled": [
+            "name",
+            "email",
+            "tel",
+            "check:ps-consent"
+          ],
+          "filledPng": "alpha-fitness-pre-sale-f1-wypelniony.png",
+          "submitVia": "click",
+          "requests": [
+            "POST 200 https://alphafitness.pl/send_email.php"
+          ],
+          "badStatus": false,
+          "successHit": true,
+          "errorHit": false,
+          "afterPng": "alpha-fitness-pre-sale-f1-po.png",
+          "finalUrl": "https://alphafitness.pl/",
+          "urlSuccess": false,
+          "verdict": "OK",
+          "detail": "Wykryto komunikat sukcesu, brak bledow HTTP."
+        }
+      ],
+      "verdict": "OK",
+      "detail": "Wszystkie formularze: sukces.",
+      "title": "ALPHA FITNESS — Nowy Sącz · Otwarcie 09.2026",
+      "formsFound": 1
+    },
+    {
+      "name": "Corner Gym (wejsciowka)",
+      "url": "https://cornergym.pl/darmowa-wejsciowka/",
+      "mail": "hello@cornergym.pl",
+      "checkedAt": "24.09.2026, 10:40:15",
+      "forms": [
+        {
+          "index": 0,
+          "heading": "JAK TO DZIAŁA\nTrzy kroki i trenujesz\n\n1. Wypełnij formularz — wybierz klub i zostaw kontakt.\n\n2. Odbierz potwierdzenie —",
+          "id": "",
+          "action": "https://formsubmit.co/hello@cornergym.pl",
+          "method": "POST",
+          "fields": 9,
+          "hasCaptcha": true,
+          "beforePng": "corner-gym-wejsciowka-f1-przed.png",
+          "filled": [
+            "select:klub=Kraków — Mateczny (ul. Rydlówka 38)",
+            "name",
+            "email",
+            "tel",
+            "check:zgoda"
+          ],
+          "filledPng": "corner-gym-wejsciowka-f1-wypelniony.png",
+          "captchaNote": "Wykryto CAPTCHA (reCAPTCHA/Turnstile/hCaptcha) - automat moze zostac zablokowany.",
+          "submitVia": "click",
+          "requests": [
+            "POST 204 https://analytics.google.com/g/collect?v=2&tid=G-4802GN6XLB&gtm=45je69m1v9261257242za20gzb9261792971zd92617929",
+            "GET 200 https://www.googleadservices.com/pagead/conversion/18452830620/?random=1790246430688&cv=11&fst=1790246430688&f",
+            "POST 302 https://googleads.g.doubleclick.net/pagead/viewthroughconversion/18452830620/?random=317615508&cv=11&fst=17902",
+            "GET 200 https://www.google.com/pagead/1p-conversion/18452830620/?random=317615508&cv=11&fst=1790246430688&fmt=8&bg=fff",
+            "POST 204 https://analytics.google.com/g/collect?v=2&tid=G-4802GN6XLB&gtm=45je69m1v9261257242z89261792971za20gzb92617929",
+            "POST 204 https://analytics.google.com/g/collect?v=2&tid=G-4802GN6XLB&gtm=45je69m1v9261257242za20gzb9261792971zd92617929"
+          ],
+          "badStatus": false,
+          "successHit": false,
+          "errorHit": false,
+          "afterPng": "corner-gym-wejsciowka-f1-po.png",
+          "finalUrl": "https://cornergym.pl/darmowa-wejsciowka/",
+          "urlSuccess": false,
+          "verdict": "RECZNIE",
+          "detail": "CAPTCHA na formularzu - wymaga recznego testu w trybie --headed."
+        }
+      ],
+      "verdict": "RECZNIE",
+      "detail": "Formularze z CAPTCHA / ukryte (popup) do testu recznego.",
+      "title": "Darmowa wejściówka — Corner Gym | wypróbuj siłownię za rogiem",
+      "formsFound": 2
+    },
+    {
+      "name": "Corner Gym (Mateczny)",
+      "url": "https://cornergym.pl/rydlowka/",
+      "mail": "hello@cornergym.pl",
+      "checkedAt": "24.09.2026, 10:40:56",
+      "forms": [
+        {
+          "index": 0,
+          "heading": "JUŻ OTWARTE\nTrenuj już dziś\n99,00 zł / pierwszy miesiąc\n\nKlub już otwarty. Pierwszy miesiąc 99,00 zł — dołącz teraz.\n\nKL",
+          "id": "",
+          "action": "https://formsubmit.co/hello@cornergym.pl",
+          "method": "POST",
+          "fields": 9,
+          "hasCaptcha": true,
+          "beforePng": "corner-gym-mateczny-f1-przed.png",
+          "filled": [
+            "name",
+            "email",
+            "tel",
+            "check:zgoda"
+          ],
+          "filledPng": "corner-gym-mateczny-f1-wypelniony.png",
+          "captchaNote": "Wykryto CAPTCHA (reCAPTCHA/Turnstile/hCaptcha) - automat moze zostac zablokowany.",
+          "submitVia": "click",
+          "requests": [
+            "POST 204 https://analytics.google.com/g/collect?v=2&tid=G-4802GN6XLB&gtm=45je69m1h1v9261257242za20gzb9261792971zd926179"
+          ],
+          "badStatus": false,
+          "successHit": true,
+          "errorHit": false,
+          "afterPng": "corner-gym-mateczny-f1-po.png",
+          "finalUrl": "https://cornergym.pl/rydlowka/",
+          "urlSuccess": false,
+          "verdict": "OK",
+          "detail": "Wykryto komunikat sukcesu, brak bledow HTTP."
+        }
+      ],
+      "verdict": "OK",
+      "detail": "Wszystkie formularze: sukces.",
+      "title": "Siłownia Kraków Mateczny — Corner Gym, ul. Rydlówka 38 | już otwarte",
+      "formsFound": 2
+    },
+    {
+      "name": "Corner Gym (Zlocien)",
+      "url": "https://cornergym.pl/zlocien/",
+      "mail": "hello@cornergym.pl",
+      "checkedAt": "24.09.2026, 10:41:22",
+      "forms": [
+        {
+          "index": 0,
+          "heading": "PRZEDSPRZEDAŻ — TYLKO TERAZ\nBądź pierwszy.\nPłać mniej.\n99,00 zł / pierwszy miesiąc\n\nOferta przedsprzedażowa, zanim ruszy",
+          "id": "",
+          "action": "https://formsubmit.co/hello@cornergym.pl",
+          "method": "POST",
+          "fields": 9,
+          "hasCaptcha": true,
+          "beforePng": "corner-gym-zlocien-f1-przed.png",
+          "filled": [
+            "name",
+            "email",
+            "tel",
+            "check:zgoda"
+          ],
+          "filledPng": "corner-gym-zlocien-f1-wypelniony.png",
+          "captchaNote": "Wykryto CAPTCHA (reCAPTCHA/Turnstile/hCaptcha) - automat moze zostac zablokowany.",
+          "submitVia": "click",
+          "requests": [
+            "POST 204 https://analytics.google.com/g/collect?v=2&tid=G-4802GN6XLB&gtm=45je69m1v9261257242za20gzb9261792971zd92617929",
+            "POST 200 https://formsubmit.co/ajax/hello@cornergym.pl"
+          ],
+          "badStatus": false,
+          "successHit": true,
+          "errorHit": false,
+          "afterPng": "corner-gym-zlocien-f1-po.png",
+          "finalUrl": "https://cornergym.pl/zlocien/",
+          "urlSuccess": false,
+          "verdict": "OK",
+          "detail": "Wykryto komunikat sukcesu, brak bledow HTTP."
+        }
+      ],
+      "verdict": "OK",
+      "detail": "Wszystkie formularze: sukces.",
+      "title": "Siłownia Kraków Złocień — Corner Gym, ul. Agatowa 17 | otwarcie 1.10.2026",
+      "formsFound": 2
+    },
+    {
+      "name": "Corner Gym (Pradnik)",
+      "url": "https://cornergym.pl/piaszczysta/",
+      "mail": "hello@cornergym.pl",
+      "checkedAt": "24.09.2026, 10:41:47",
+      "forms": [
+        {
+          "index": 0,
+          "heading": "PRZEDSPRZEDAŻ — TYLKO TERAZ\nBądź pierwszy.\nPłać mniej.\n99,00 zł / pierwszy miesiąc\n\nOferta przedsprzedażowa, zanim ruszy",
+          "id": "",
+          "action": "https://formsubmit.co/hello@cornergym.pl",
+          "method": "POST",
+          "fields": 9,
+          "hasCaptcha": true,
+          "beforePng": "corner-gym-pradnik-f1-przed.png",
+          "filled": [
+            "name",
+            "email",
+            "tel",
+            "check:zgoda"
+          ],
+          "filledPng": "corner-gym-pradnik-f1-wypelniony.png",
+          "captchaNote": "Wykryto CAPTCHA (reCAPTCHA/Turnstile/hCaptcha) - automat moze zostac zablokowany.",
+          "submitVia": "click",
+          "requests": [
+            "POST 204 https://analytics.google.com/g/collect?v=2&tid=G-4802GN6XLB&gtm=45je69m1v9261257242za20gzb9261792971zd92617929"
+          ],
+          "badStatus": false,
+          "successHit": true,
+          "errorHit": false,
+          "afterPng": "corner-gym-pradnik-f1-po.png",
+          "finalUrl": "https://cornergym.pl/piaszczysta/",
+          "urlSuccess": false,
+          "verdict": "OK",
+          "detail": "Wykryto komunikat sukcesu, brak bledow HTTP."
+        }
+      ],
+      "verdict": "OK",
+      "detail": "Wszystkie formularze: sukces.",
+      "title": "Siłownia Kraków Prądnik Biały — Corner Gym, ul. Piaszczysta | otwarcie IV kwartał 2026",
+      "formsFound": 2
+    },
+    {
+      "name": "Corner Gym (Ruczaj)",
+      "url": "https://cornergym.pl/lubostron/",
+      "mail": "hello@cornergym.pl",
+      "checkedAt": "24.09.2026, 10:42:13",
+      "forms": [
+        {
+          "index": 0,
+          "heading": "KLUB W BUDOWIE\nTrwa budowa.\nTy zajmij miejsce.\n\nZapisani na listę jako pierwsi poznają datę otwarcia i otrzymają ofertę ",
+          "id": "",
+          "action": "https://formsubmit.co/hello@cornergym.pl",
+          "method": "POST",
+          "fields": 9,
+          "hasCaptcha": true,
+          "beforePng": "corner-gym-ruczaj-f1-przed.png",
+          "filled": [
+            "name",
+            "email",
+            "tel",
+            "check:zgoda"
+          ],
+          "filledPng": "corner-gym-ruczaj-f1-wypelniony.png",
+          "captchaNote": "Wykryto CAPTCHA (reCAPTCHA/Turnstile/hCaptcha) - automat moze zostac zablokowany.",
+          "submitVia": "click",
+          "requests": [
+            "POST 200 https://formsubmit.co/ajax/hello@cornergym.pl",
+            "POST 204 https://analytics.google.com/g/collect?v=2&tid=G-4802GN6XLB&gtm=45je69m1h1v9261257242za20gzb9261792971zd926179"
+          ],
+          "badStatus": false,
+          "successHit": true,
+          "errorHit": false,
+          "afterPng": "corner-gym-ruczaj-f1-po.png",
+          "finalUrl": "https://cornergym.pl/lubostron/",
+          "urlSuccess": false,
+          "verdict": "OK",
+          "detail": "Wykryto komunikat sukcesu, brak bledow HTTP."
+        }
+      ],
+      "verdict": "OK",
+      "detail": "Wszystkie formularze: sukces.",
+      "title": "Siłownia Kraków Ruczaj — Corner Gym, ul. Lubostroń 1 (w budowie)",
+      "formsFound": 2
+    },
+    {
+      "name": "Progres Lomza",
+      "url": "https://progresgym.pl/lomza/kontakt/",
+      "mail": "",
+      "checkedAt": "24.09.2026, 10:42:39",
+      "forms": [
+        {
+          "index": 0,
+          "heading": "Zostaw nam swoje dane, abyśmy mogli skontaktować się z Tobą w celu ustalenia dogodnego terminu Twojej pierwszej wizyty l",
+          "id": "contactFormEl",
+          "action": "https://progresgym.pl/send_email.php",
+          "method": "POST",
+          "fields": 6,
+          "hasCaptcha": false,
+          "beforePng": "progres-lomza-f1-przed.png",
+          "filled": [
+            "name",
+            "tel",
+            "email",
+            "check:zgoda_warunki"
+          ],
+          "filledPng": "progres-lomza-f1-wypelniony.png",
+          "submitVia": "click",
+          "requests": [
+            "POST 200 https://progresgym.pl/send_email.php"
+          ],
+          "badStatus": false,
+          "successHit": true,
+          "errorHit": false,
+          "afterPng": "progres-lomza-f1-po.png",
+          "finalUrl": "https://progresgym.pl/lomza/kontakt/",
+          "urlSuccess": false,
+          "verdict": "OK",
+          "detail": "Wykryto komunikat sukcesu, brak bledow HTTP."
+        }
+      ],
+      "verdict": "OK",
+      "detail": "Wszystkie formularze: sukces.",
+      "title": "Kontakt | PROGRES GYM Łomża",
+      "formsFound": 1
+    },
+    {
+      "name": "Progres Walbrzych",
+      "url": "https://progresgym.pl/walbrzych/kontakt/",
+      "mail": "",
+      "checkedAt": "24.09.2026, 10:43:04",
+      "forms": [
+        {
+          "index": 0,
+          "heading": "Zostaw nam swoje dane, abyśmy mogli skontaktować się z Tobą w celu ustalenia dogodnego terminu Twojej pierwszej wizyty l",
+          "id": "contactFormEl",
+          "action": "https://progresgym.pl/send_email.php",
+          "method": "POST",
+          "fields": 6,
+          "hasCaptcha": false,
+          "beforePng": "progres-walbrzych-f1-przed.png",
+          "filled": [
+            "name",
+            "tel",
+            "email",
+            "check:zgoda_warunki"
+          ],
+          "filledPng": "progres-walbrzych-f1-wypelniony.png",
+          "submitVia": "click",
+          "requests": [
+            "POST 200 https://progresgym.pl/send_email.php"
+          ],
+          "badStatus": false,
+          "successHit": true,
+          "errorHit": false,
+          "afterPng": "progres-walbrzych-f1-po.png",
+          "finalUrl": "https://progresgym.pl/walbrzych/kontakt/",
+          "urlSuccess": false,
+          "verdict": "OK",
+          "detail": "Wykryto komunikat sukcesu, brak bledow HTTP."
+        }
+      ],
+      "verdict": "OK",
+      "detail": "Wszystkie formularze: sukces.",
+      "title": "Kontakt | PROGRES GYM Wałbrzych",
+      "formsFound": 1
+    },
+    {
+      "name": "B-FIT Zarow",
+      "url": "https://bbfit.pl/",
+      "mail": "biuro@bbfit.pl",
+      "checkedAt": "24.09.2026, 10:43:30",
+      "forms": [
+        {
+          "index": 0,
+          "heading": "KONTAKT\nDOŁĄCZ\nDO NAS\n\nWystartowała druga pula sprzedaży karnetów — promocyjny Karnet OPEN 169 zł tylko do 30 września. ",
+          "id": "contactForm",
+          "action": "https://bbfit.pl/form.php",
+          "method": "POST",
+          "fields": 7,
+          "hasCaptcha": false,
+          "beforePng": "b-fit-zarow-f1-przed.png",
+          "filled": [
+            "name",
+            "email",
+            "tel",
+            "check:zgoda_privacy"
+          ],
+          "filledPng": "b-fit-zarow-f1-wypelniony.png",
+          "submitVia": "click",
+          "requests": [
+            "POST 200 https://bbfit.pl/form.php"
+          ],
+          "badStatus": false,
+          "successHit": true,
+          "errorHit": false,
+          "afterPng": "b-fit-zarow-f1-po.png",
+          "finalUrl": "https://bbfit.pl/",
+          "urlSuccess": false,
+          "verdict": "OK",
+          "detail": "Wykryto komunikat sukcesu, brak bledow HTTP."
+        }
+      ],
+      "verdict": "OK",
+      "detail": "Wszystkie formularze: sukces.",
+      "title": "B-FIT Żarów — NanoGym + Siłownia | Klub już otwarty",
+      "formsFound": 1
+    },
+    {
+      "name": "Forma Gym",
+      "url": "https://forma-gym.pl/",
+      "mail": "kontakt@forma-gym.pl",
+      "checkedAt": "24.09.2026, 10:43:55",
+      "forms": [
+        {
+          "index": 0,
+          "heading": "KONTAKT\nZacznij swoją Formę już dziś.\n\nNajszybszą drogą jest rezerwacja treningu próbnego. Wypełnij formularz lub zadzwo",
+          "id": "",
+          "action": "https://forma-gym.pl/formularz.php",
+          "method": "POST",
+          "fields": 7,
+          "hasCaptcha": false,
+          "beforePng": "forma-gym-f1-przed.png",
+          "filled": [
+            "name",
+            "email",
+            "tel",
+            "msg",
+            "check:zgoda_rodo"
+          ],
+          "filledPng": "forma-gym-f1-wypelniony.png",
+          "submitVia": "click",
+          "requests": [
+            "POST 303 https://forma-gym.pl/formularz.php",
+            "GET 200 https://forma-gym.pl/index.html?formularz=wyslano",
+            "GET 200 https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Cormorant+Garamond:wgh",
+            "GET 200 https://forma-gym.pl/images/forma-gym-logo.png",
+            "GET 200 https://forma-gym.pl/images/forma-action-1-smoke-finish.jpg",
+            "GET 200 https://forma-gym.pl/images/forma-action-2-core.jpg",
+            "GET 200 https://forma-gym.pl/images/gallery/image00004.jpeg",
+            "GET 200 https://forma-gym.pl/images/gallery/image00017.jpeg",
+            "GET 200 https://forma-gym.pl/images/gallery/image00014.jpeg",
+            "GET 200 https://forma-gym.pl/images/gallery/image00016.jpeg",
+            "GET 200 https://forma-gym.pl/images/gallery/image00007.jpeg",
+            "GET 200 https://forma-gym.pl/images/gallery/image00002.jpeg",
+            "GET 200 https://forma-gym.pl/images/gallery/image00005.jpeg",
+            "GET 200 https://forma-gym.pl/images/staff/Pawe%C5%82%20Zbroszczyk.jpg",
+            "GET 200 https://forma-gym.pl/images/staff/Kuba%20Rybus.jpg"
+          ],
+          "badStatus": false,
+          "successHit": true,
+          "errorHit": false,
+          "afterPng": "forma-gym-f1-po.png",
+          "finalUrl": "https://forma-gym.pl/index.html?formularz=wyslano#kontakt",
+          "urlSuccess": true,
+          "verdict": "OK",
+          "detail": "Wykryto komunikat sukcesu, brak bledow HTTP."
+        }
+      ],
+      "verdict": "OK",
+      "detail": "Wszystkie formularze: sukces.",
+      "title": "FORMA GYM Strawczyn - Ruch · Siła · Równowaga | Klub treningowy Nano Gym",
+      "formsFound": 1
+    }
+  ]
+}
