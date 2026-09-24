@@ -9,6 +9,7 @@
 const fs = require('fs');
 const path = require('path');
 const { Client } = require('basic-ftp');
+const { CSS, pill, esc, formTitle } = require('./layout');
 
 const DIR = __dirname;
 const OUT = path.join(DIR, 'wyniki');
@@ -16,9 +17,8 @@ const HIST = path.join(DIR, 'historia');
 const PUB = path.join(DIR, 'public');
 const UPLOAD = process.argv.includes('--upload');
 
-const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-const BADGE = v => ({ OK: '🟢 OK', BLAD: '🔴 BŁĄD', NIEPEWNY: '🟡 NIEPEWNY', RECZNIE: '🟡 RĘCZNIE', UKRYTY: '👻 UKRYTY', DRY: '⚪ DRY', POMINIETY: '⏭' }[v] || '❓ ' + v);
 const codeOf = f => f.replace(/\.json$/, '');
+const BADGE = pill;
 
 function loadEnv() {
   const cfg = {};
@@ -56,26 +56,28 @@ function collectRuns() {
 
 function buildIndex(runs) {
   const last = runs[0];
-  const rows = last ? last.results.map(r =>
-    `<tr><td><b>${esc(r.name)}</b><br><span class="s">${esc(r.url)}</span></td><td>${BADGE(r.verdict)}</td>` +
-    `<td>${r.forms.map(f => `#${f.index + 1} ${BADGE(f.verdict)}`).join('<br>') || '<span class="s">—</span>'}</td></tr>`).join('')
-    : '<tr><td colspan="3">Brak wyników.</td></tr>';
+  const flat = last ? last.results.flatMap(r => (r.forms.length ? r.forms : [null]).map(f => ({ r, f }))) : [];
+  const ok = flat.filter(({ f }) => f && f.verdict === 'OK').length;
+  const bad = flat.filter(({ f }) => f && f.verdict === 'BLAD').length;
+  const rows = last ? last.results.flatMap(r => {
+    const siteCell = `<b>${esc(r.name)}</b><br><span class="s">${esc(r.checkedAt || '')}</span>`;
+    const urlCell = `<span class="url"><a href="${esc(r.url)}" target="_blank">${esc(r.url)}</a></span>`;
+    if (!r.forms.length) return [`<tr><td>${siteCell}</td><td>${urlCell}</td><td>${pill(r.verdict)}<br><span class="s">${esc(r.detail)}</span></td></tr>`];
+    return r.forms.map(f => `<tr><td>${siteCell}<br><span class="s">${esc(formTitle(f))}</span></td><td>${urlCell}</td><td>${pill(f.verdict)}<br><span class="s">${esc(f.detail || '')}</span></td></tr>`);
+  }).join('') : '<tr><td colspan="3">Brak wyników.</td></tr>';
   const hist = runs.map(r => {
-    const ok = r.results.filter(x => x.verdict === 'OK').length;
-    return `<li><a href="${r.code}-raport.html">${esc(r.code)}</a> — ${esc(r.at || '')} — 🟢 ${ok}/${r.results.length}${r.dry ? ' (DRY)' : ''}</li>`;
+    const fok = r.results.flatMap(x => x.forms).filter(f => f && f.verdict === 'OK').length;
+    const fall = r.results.flatMap(x => x.forms).length;
+    return `<li><a href="${r.code}-raport.html">${esc(r.code)}</a> — ${esc(r.at || '')} — działa ${fok}/${fall}${r.dry ? ' (test próbny)' : ''}</li>`;
   }).join('') || '<li>—</li>';
   return `<!DOCTYPE html><html lang="pl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Checker formularzy — wyniki</title>
-<style>body{font-family:system-ui,Arial,sans-serif;background:#f8fafc;margin:0;color:#0f172a}
-header{background:#0f172a;color:#fff;padding:14px 18px}main{max-width:1000px;margin:0 auto;padding:14px}
-.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:12px;margin-bottom:12px}
-table{width:100%;border-collapse:collapse;font-size:14px}td,th{border-bottom:1px solid #e2e8f0;padding:7px;text-align:left}
-.s{font-size:12px;opacity:.7}</style></head>
-<body><header><h2 style="margin:0">📋 Checker formularzy — wyniki</h2>
-<div style="font-size:12.5px;opacity:.8">${last ? `Ostatni run: ${esc(last.code)} • ${esc(last.at)} • ${last.dry ? 'DRY (bez wysyłki)' : 'REALNA WYSYŁKA'}` : 'Brak wyników'}</div></header>
-<main><div class="card"><table><thead><tr><th>Strona</th><th>Wynik</th><th>Formularze</th></tr></thead><tbody>${rows}</tbody></table></div>
-<div class="card"><b>Historia runów</b><ul>${hist}</ul>
-<p class="s">Legenda: 🟢 serwer przyjął zgłoszenie · 🔴 błąd · 🟡 do sprawdzenia ręcznie. HTTP 200 = „serwer przyjął”, NIE dowód dostarczenia e-maila. Szczegóły, kody odpowiedzi i screenshoty w raportach powyżej.</p></div></main></body></html>`;
+<title>Kontrola formularzy — wyniki</title><style>${CSS}</style></head>
+<body><div class="top"><h1>Kontrola formularzy kontaktowych</h1>
+<div class="meta">${last ? `Ostatni test: ${esc(last.code)} • ${esc(last.at)} • ${last.dry ? 'test próbny (bez wysyłki)' : 'realna wysyłka testowa'}` : 'Brak wyników'}</div>
+<div class="chips"><span class="chip">Formularzy: <b>${flat.length}</b></span><span class="chip">Działa: <b>${ok}</b></span><span class="chip">Błędów: <b>${bad}</b></span></div></div>
+<div class="wrap"><div class="card"><table><thead><tr><th style="width:26%">Strona i formularz</th><th style="width:30%">Adres</th><th>Wynik</th></tr></thead><tbody>${rows}</tbody></table></div>
+<div class="card" style="padding:12px 14px"><b>Historia testów</b><ul style="margin:8px 0;padding-left:20px">${hist}</ul>
+<div class="footer">„Działa" = serwer przyjął zgłoszenie (komunikat lub kod sukcesu). „Błąd" = odrzucenie lub wyjątek. „Do sprawdzenia / Test ręczny / Ukryty" = formularz wymaga obejrzenia lub ręcznego kliknięcia (CAPTCHA, popup, zakładka). Szczegóły, kody odpowiedzi i zrzuty ekranu w raportach powyżej.</div></div></div></body></html>`;
 }
 
 (async () => {

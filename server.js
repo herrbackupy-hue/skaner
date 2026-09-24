@@ -15,6 +15,7 @@ const { spawn } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { CSS, pill, esc, formTitle } = require('./layout');
 
 const DIR = __dirname;
 const OUT = path.join(DIR, 'wyniki');
@@ -77,40 +78,39 @@ function startRun({ dry, filter, imap, scheduleNote }) {
   return { started: true, pid: child.pid, args: args.join(' ') };
 }
 
-const BADGE = v => ({ OK: '🟢 OK', BLAD: '🔴 BŁĄD', NIEPEWNY: '🟡 NIEPEWNY', RECZNIE: '🟡 RĘCZNIE', UKRYTY: '👻 UKRYTY', DRY: '⚪ DRY', POMINIETY: '⏭' }[v] || '❓ ' + v);
-
 function dashboard(token) {
   const last = lastResults();
-  const rows = last ? last.results.map(r =>
-    `<tr><td><b>${r.name}</b><br><span class="s">${r.url}</span></td><td>${BADGE(r.verdict)}</td>` +
-    `<td>${r.forms.map(f => `#${f.index + 1} ${BADGE(f.verdict)}`).join('<br>') || '<span class="s">—</span>'}</td></tr>`).join('')
-    : '<tr><td colspan="3">Brak wyników — uruchom pierwszy test.</td></tr>';
+  const flat = last ? last.results.flatMap(r => (r.forms.length ? r.forms : [null]).map(f => ({ r, f }))) : [];
+  const ok = flat.filter(({ f }) => f && f.verdict === 'OK').length;
+  const bad = flat.filter(({ f }) => f && f.verdict === 'BLAD').length;
+  const rows = last ? last.results.flatMap(r => {
+    const siteCell = `<b>${esc(r.name)}</b><br><span class="s">${esc(r.checkedAt || '')}</span>`;
+    const urlCell = `<span class="url">${esc(r.url)}</span>`;
+    if (!r.forms.length) return [`<tr><td>${siteCell}</td><td>${urlCell}</td><td>${pill(r.verdict)}<br><span class="s">${esc(r.detail)}</span></td></tr>`];
+    return r.forms.map(f => `<tr><td>${siteCell}<br><span class="s">${esc(formTitle(f))}</span></td><td>${urlCell}</td><td>${pill(f.verdict)}<br><span class="s">${esc(f.detail || '')}</span></td></tr>`);
+  }).join('') : '<tr><td colspan="3">Brak wyników — uruchom pierwszy test.</td></tr>';
   const hist = history().map(f => `<li><a href="/historia/${f}?token=${token}">${f}</a></li>`).join('') || '<li>—</li>';
   return `<!DOCTYPE html><html lang="pl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Checker formularzy — dashboard</title>
-<style>body{font-family:system-ui,Arial,sans-serif;background:#f8fafc;margin:0;color:#0f172a}
-header{background:#0f172a;color:#fff;padding:14px 18px}main{max-width:1000px;margin:0 auto;padding:14px}
-.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:12px;margin-bottom:12px}
-table{width:100%;border-collapse:collapse;font-size:14px}td,th{border-bottom:1px solid #e2e8f0;padding:7px;text-align:left}
-.s{font-size:12px;opacity:.7}button{background:#0f172a;color:#fff;border:0;border-radius:8px;padding:9px 14px;cursor:pointer}
-#run{font-weight:700}.spin{display:inline-block;animation:s 1s linear infinite}@keyframes s{to{transform:rotate(360deg)}}</style></head>
-<body><header><h2 style="margin:0">📋 Checker formularzy — dashboard</h2>
-<div style="font-size:12.5px;opacity:.8" id="meta">${last ? `Ostatni run: ${last.code} • ${last.at} • ${last.dry ? 'DRY' : 'REALNA WYSYŁKA'}` : '—'}</div></header>
-<main>
-<div class="card"><span id="run">…</span>
- <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
-  <button onclick="go(false)">▶ Uruchom test (wysyłka!)</button>
-  <button onclick="go(true)">👁 Dry-run (bez wysyłki)</button>
-  <a href="/wyniki/raport.html?token=${token}" target="_blank"><button>📄 Pełny raport</button></a>
-  <a href="/api/log?token=${token}" target="_blank"><button>📜 Log</button></a>
+<title>Kontrola formularzy — panel</title><style>${CSS}
+#run{font-weight:650}.spin{display:inline-block;animation:s 1s linear infinite}@keyframes s{to{transform:rotate(360deg)}}</style></head>
+<body><div class="top"><h1>Kontrola formularzy — panel</h1>
+<div class="meta" id="meta">${last ? `Ostatni test: ${esc(last.code)} • ${esc(last.at)} • ${last.dry ? 'test próbny' : 'realna wysyłka'}` : '—'}</div>
+<div class="chips"><span class="chip">Formularzy: <b>${flat.length}</b></span><span class="chip">Działa: <b>${ok}</b></span><span class="chip">Błędów: <b>${bad}</b></span></div></div>
+<div class="wrap">
+<div class="card" style="padding:12px 14px"><span id="run">…</span>
+ <div class="btns">
+  <button class="btn" onclick="go(false)">Uruchom test (wysyłka)</button>
+  <button class="btn sec" onclick="go(true)">Test próbny (bez wysyłki)</button>
+  <a href="/wyniki/raport.html?token=${token}" target="_blank"><button class="btn sec">Pełny raport</button></a>
+  <a href="/api/log?token=${token}" target="_blank"><button class="btn sec">Log</button></a>
  </div>
- <div class="s">Test wysyła PRAWDZIWE zgłoszenia TEST do klubów. Harmonogram: SCHEDULE=daily (codziennie 06:00) albo cron systemu (instrukcja w server.js).</div></div>
-<div class="card"><table><thead><tr><th>Strona</th><th>Wynik</th><th>Formularze</th></tr></thead><tbody>${rows}</tbody></table></div>
-<div class="card"><b>Historia runów</b><ul>${hist}</ul></div>
-</main>
+ <div class="s">Test wysyła prawdziwe zgłoszenia TEST do klubów. Harmonogram: SCHEDULE=daily (codziennie 06:00) albo cron systemu (instrukcja w server.js).</div></div>
+<div class="card"><table><thead><tr><th style="width:26%">Strona i formularz</th><th style="width:30%">Adres</th><th>Wynik</th></tr></thead><tbody>${rows}</tbody></table></div>
+<div class="card" style="padding:12px 14px"><b>Historia testów</b><ul style="margin:8px 0;padding-left:20px">${hist}</ul></div>
+</div>
 <script>const T="${token}";
 async function st(){const r=await fetch("/api/status?token="+T).then(x=>x.json());
-document.getElementById("run").innerHTML=r.running?"<span class=spin>⏳</span> TEST TRWA (start "+(r.startedAt||"?")+") …odświeżam co 10 s":"✅ Gotowy do testu.";}
+document.getElementById("run").innerHTML=r.running?"<span class=spin>◌</span> TEST TRWA (start "+(r.startedAt||"?")+") — odświeżanie co 10 s":"Gotowy do testu.";}
 async function go(dry){if(!dry&&!confirm("Wysłać PRAWDZIWE zgłoszenia TEST do klubów?"))return;
 const r=await fetch("/api/run?token="+T+(dry?"&dry=1":""),{method:"POST"}).then(x=>x.json());
 alert(r.error||("Start! pid "+r.pid));st();}st();setInterval(st,10000);</script></body></html>`;

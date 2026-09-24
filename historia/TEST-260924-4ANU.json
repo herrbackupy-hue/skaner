@@ -1,0 +1,198 @@
+{
+  "code": "TEST-260924-4ANU",
+  "dry": true,
+  "at": "24.09.2026, 11:05:27",
+  "mail": {
+    "checked": false
+  },
+  "results": [
+    {
+      "name": "Corner Gym (Mateczny)",
+      "url": "https://cornergym.pl/rydlowka/",
+      "mail": "hello@cornergym.pl",
+      "checkedAt": "24.09.2026, 11:03:38",
+      "forms": [
+        {
+          "index": 0,
+          "heading": "JUŻ OTWARTE\nTrenuj już dziś\n99,00 zł / pierwszy miesiąc\n\nKlub już otwarty. Pierwszy miesiąc 99,00 zł — dołącz teraz.\n\nKL",
+          "id": "",
+          "action": "https://formsubmit.co/hello@cornergym.pl",
+          "method": "POST",
+          "fields": 9,
+          "hasCaptcha": true,
+          "beforePng": "corner-gym-mateczny-f1-przed.png",
+          "filled": [
+            "name",
+            "email",
+            "tel",
+            "check:zgoda"
+          ],
+          "filledPng": "corner-gym-mateczny-f1-wypelniony.png",
+          "verdict": "DRY",
+          "detail": "Tryb --dry: wypelniono, nie wyslano."
+        },
+        {
+          "index": 1,
+          "heading": "",
+          "id": "",
+          "action": "https://cornergym.pl/rydlowka/",
+          "method": "GET",
+          "fields": 1,
+          "hasCaptcha": false,
+          "beforePng": "corner-gym-mateczny-f2-przed.png",
+          "filled": [
+            "msg"
+          ],
+          "filledPng": "corner-gym-mateczny-f2-wypelniony.png",
+          "verdict": "DRY",
+          "detail": "Tryb --dry: wypelniono, nie wyslano."
+        }
+      ],
+      "verdict": "DRY",
+      "detail": "Tryb probny.",
+      "title": "Siłownia Kraków Mateczny — Corner Gym, ul. Rydlówka 38 | już otwarte",
+      "formsFound": 2
+    },
+    {
+      "name": "Corner Gym (Zlocien)",
+      "url": "https://cornergym.pl/zlocien/",
+      "mail": "hello@cornergym.pl",
+      "checkedAt": "24.09.2026, 11:04:07",
+      "forms": [
+        {
+          "index": 0,
+          "heading": "PRZEDSPRZEDAŻ — TYLKO TERAZ\nBądź pierwszy.\nPłać mniej.\n99,00 zł / pierwszy miesiąc\n\nOferta przedsprzedażowa, zanim ruszy",
+          "id": "",
+          "action": "https://formsubmit.co/hello@cornergym.pl",
+          "method": "POST",
+          "fields": 9,
+          "hasCaptcha": true,
+          "beforePng": "corner-gym-zlocien-f1-przed.png",
+          "filled": [
+            "name",
+            "email",
+            "tel",
+            "check:zgoda"
+          ],
+          "filledPng": "corner-gym-zlocien-f1-wypelniony.png",
+          "verdict": "DRY",
+          "detail": "Tryb --dry: wypelniono, nie wyslano."
+        },
+        {
+          "index": 1,
+          "heading": "",
+          "id": "",
+          "action": "https://cornergym.pl/zlocien/",
+          "method": "GET",
+          "fields": 1,
+          "hasCaptcha": false,
+          "beforePng": "corner-gym-zlocien-f2-przed.png",
+          "filled": [
+            "msg"
+          ],
+          "filledPng": "corner-gym-zlocien-f2-wypelniony.png",
+          "verdict": "DRY",
+          "detail": "Tryb --dry: wypelniono, nie wyslano."
+        }
+      ],
+      "verdict": "DRY",
+      "detail": "Tryb probny.",
+      "title": "Siłownia Kraków Złocień — Corner Gym, ul. Agatowa 17 | otwarcie 1.10.2026",
+      "formsFound": 2
+    },
+    {
+      "name": "Corner Gym (Pradnik)",
+      "url": "https://cornergym.pl/piaszczysta/",
+      "mail": "hello@cornergym.pl",
+      "checkedAt": "24.09.2026, 11:04:34",
+      "forms": [
+        {
+          "index": 0,
+          "heading": "PRZEDSPRZEDAŻ — TYLKO TERAZ\nBądź pierwszy.\nPłać mniej.\n99,00 zł / pierwszy miesiąc\n\nOferta przedsprzedażowa, zanim ruszy",
+          "id": "",
+          "action": "https://formsubmit.co/hello@cornergym.pl",
+          "method": "POST",
+          "fields": 9,
+          "hasCaptcha": true,
+          "beforePng": "corner-gym-pradnik-f1-przed.png",
+          "filled": [
+            "name",
+            "email",
+            "tel",
+            "check:zgoda"
+          ],
+          "filledPng": "corner-gym-pradnik-f1-wypelniony.png",
+          "verdict": "DRY",
+          "detail": "Tryb --dry: wypelniono, nie wyslano."
+        },
+        {
+          "index": 1,
+          "heading": "",
+          "id": "",
+          "action": "https://cornergym.pl/piaszczysta/",
+          "method": "GET",
+          "fields": 1,
+          "hasCaptcha": false,
+          "beforePng": "corner-gym-pradnik-f2-przed.png",
+          "filled": [
+            "msg"
+          ],
+          "filledPng": "corner-gym-pradnik-f2-wypelniony.png",
+          "verdict": "DRY",
+          "detail": "Tryb --dry: wypelniono, nie wyslano."
+        }
+      ],
+      "verdict": "DRY",
+      "detail": "Tryb probny.",
+      "title": "Siłownia Kraków Prądnik Biały — Corner Gym, ul. Piaszczysta | otwarcie IV kwartał 2026",
+      "formsFound": 2
+    },
+    {
+      "name": "Corner Gym (Ruczaj)",
+      "url": "https://cornergym.pl/lubostron/",
+      "mail": "hello@cornergym.pl",
+      "checkedAt": "24.09.2026, 11:05:00",
+      "forms": [
+        {
+          "index": 0,
+          "heading": "KLUB W BUDOWIE\nTrwa budowa.\nTy zajmij miejsce.\n\nZapisani na listę jako pierwsi poznają datę otwarcia i otrzymają ofertę ",
+          "id": "",
+          "action": "https://formsubmit.co/hello@cornergym.pl",
+          "method": "POST",
+          "fields": 9,
+          "hasCaptcha": true,
+          "beforePng": "corner-gym-ruczaj-f1-przed.png",
+          "filled": [
+            "name",
+            "email",
+            "tel",
+            "check:zgoda"
+          ],
+          "filledPng": "corner-gym-ruczaj-f1-wypelniony.png",
+          "verdict": "DRY",
+          "detail": "Tryb --dry: wypelniono, nie wyslano."
+        },
+        {
+          "index": 1,
+          "heading": "",
+          "id": "",
+          "action": "https://cornergym.pl/lubostron/",
+          "method": "GET",
+          "fields": 1,
+          "hasCaptcha": false,
+          "beforePng": "corner-gym-ruczaj-f2-przed.png",
+          "filled": [
+            "msg"
+          ],
+          "filledPng": "corner-gym-ruczaj-f2-wypelniony.png",
+          "verdict": "DRY",
+          "detail": "Tryb --dry: wypelniono, nie wyslano."
+        }
+      ],
+      "verdict": "DRY",
+      "detail": "Tryb probny.",
+      "title": "Siłownia Kraków Ruczaj — Corner Gym, ul. Lubostroń 1 (w budowie)",
+      "formsFound": 2
+    }
+  ]
+}

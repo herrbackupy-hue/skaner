@@ -11,6 +11,7 @@ const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
 const { findCode, loadEnv } = require('./imap-check');
+const { CSS, pill, esc, formTitle } = require('./layout');
 
 const ARGS = process.argv.slice(2);
 const DRY = ARGS.includes('--dry');
@@ -45,7 +46,6 @@ const CHALLENGE_RE = /prosz[eę] czeka|weryfikacj|just a moment|checking your br
 
 const slug = s => (s || 'strona').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
   .replace(/ł/g, 'l').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40) || 'strona';
-const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const now = () => new Date().toLocaleString('pl-PL');
 
 async function dismissCookies(page) {
@@ -310,45 +310,35 @@ async function testSite(browser, site, persistentCtx) {
   return res;
 }
 
-function verdictBadge(v) {
-  const m = { OK: ['b-ok', '🟢 OK'], BLAD: ['b-err', '🔴 BŁĄD'], NIEPEWNY: ['b-wait', '🟡 NIEPEWNY'], RECZNIE: ['b-wait', '🟡 RĘCZNIE'], UKRYTY: ['b-wait', '👻 UKRYTY'], DRY: ['b-none', '⚪ DRY'], POMINIETY: ['b-none', '⏭ POMINIETY'], 'N/A': ['b-none', '⚪ —'] };
-  const [c, t] = m[v] || m['N/A'];
-  return `<span class="badge ${c}">${t}</span>`;
-}
-
 function buildReport(results, mail) {
-  const ok = results.filter(r => r.verdict === 'OK').length;
-  const bad = results.filter(r => r.verdict === 'BLAD').length;
+  const flat = results.flatMap(r => (r.forms.length ? r.forms : [null]).map(f => ({ r, f })));
+  const ok = flat.filter(({ f }) => (f ? f.verdict : null) === 'OK').length;
+  const bad = flat.filter(({ f }) => (f ? f.verdict : null) === 'BLAD').length;
   const mailBox = !mail ? '' : mail.checked
-    ? `<div class="mailbox ${mail.found.length ? 'm-ok' : 'm-err'}">✉️ Skrzynka testowa ${esc(mail.box)}: ${mail.found.length
+    ? `<div class="note">Skrzynka testowa ${esc(mail.box)}: ${mail.found.length
       ? `znaleziono <b>${mail.found.length}</b> potwierdzen z kodem: ` + mail.found.map(f => esc(`${f.from} (${f.subject})`)).join('; ')
-      : 'BRAK wiadomosci z kodem (sprawdz SPAM recznie).'}${(mail.errors || []).map(e => `<br>! ${esc(e)}`).join('')}</div>`
-    : (mail.reason ? `<div class="mailbox">✉️ IMAP pominięto: ${esc(mail.reason)}</div>` : '');
-  const rows = results.map(r => {
-    const forms = r.forms.map(f => `<div class="formbox"><b>Formularz #${f.index + 1}</b> ${verdictBadge(f.verdict)}
-      <span class="small">${esc(f.heading || f.id || '')} · pól: ${f.fields} · ${esc(f.method)} ${esc((f.action || '').slice(0, 80))}${f.hasCaptcha ? ' · ⚠ CAPTCHA' : ''}</span><br>
-      <span class="small">Wypełniono: ${esc((f.filled || []).join(', ') || '—')} · wysyłka: ${esc(f.submitVia || '—')}</span><br>
-      ${(f.requests || []).map(q => `<span class="code">${esc(q)}</span>`).join('<br>')}<br>
-      <span class="small">${esc(f.detail || '')} ${esc(f.captchaNote || '')}</span><br>
-      ${['beforePng', 'filledPng', 'afterPng'].filter(k => f[k]).map(k => `<a href="${f[k]}" target="_blank">${k.replace('Png', '')}</a>`).join(' · ')}
-    </div>`).join('') || `<span class="small">${esc(r.detail)}</span>`;
-    return `<tr><td><b>${esc(r.name)}</b><br><a href="${esc(r.url)}" target="_blank">${esc(r.url)}</a>${r.mail ? `<br><span class="small">📧 ${esc(r.mail)}</span>` : ''}<br><span class="small">${esc(r.checkedAt)}</span>${(r.mailHits || []).map(h => `<br><span class="code">✉️ doszło od ${esc(h.from)}</span>`).join('')}</td>
-      <td>${verdictBadge(r.verdict)}<br><span class="small">${esc(r.detail)}</span></td><td>${forms}</td></tr>`;
+      : 'BRAK wiadomosci z kodem (sprawdz folder SPAM recznie).'}${(mail.errors || []).map(e => `<br>Uwaga: ${esc(e)}`).join('')}</div>`
+    : (mail.reason ? `<div class="note">IMAP pominieto: ${esc(mail.reason)}</div>` : '');
+  const rows = results.flatMap(r => {
+    const siteCell = `<b>${esc(r.name)}</b><br><span class="s">${esc(r.checkedAt)}</span>`;
+    const urlCell = `<span class="url"><a href="${esc(r.url)}" target="_blank">${esc(r.url)}</a></span>${r.mail ? `<br><span class="s">${esc(r.mail)}</span>` : ''}`;
+    if (!r.forms.length) return [`<tr><td>${siteCell}</td><td>${urlCell}</td><td>${pill(r.verdict)}<br><span class="s">${esc(r.detail)}</span></td></tr>`];
+    return r.forms.map((f, fi) => `<tr><td>${siteCell}<br><span class="s">${esc(formTitle(f))}</span>${fi === 0 ? (r.mailHits || []).map(h => `<br><span class="code">doszło od ${esc(h.from)}</span>`).join('') : ''}</td><td>${urlCell}</td>
+      <td>${pill(f.verdict)}
+      <span class="s">pól: ${f.fields} · ${esc(f.method || '')} ${esc((f.action || '').slice(0, 80))}${f.hasCaptcha ? ' · CAPTCHA' : ''}</span><br>
+      <span class="s">Wypełniono: ${esc((f.filled || []).join(', ') || '—')} · wysyłka: ${esc(f.submitVia || '—')}</span><br>
+      ${(f.requests || []).map(q => `<span class="code">${esc(q)}</span>`).join('<br>')}${(f.requests || []).length ? '<br>' : ''}
+      <span class="s">${esc(f.detail || '')} ${esc(f.captchaNote || '')}</span><br>
+      <span class="shot">${['beforePng', 'filledPng', 'afterPng'].filter(k => f[k]).map(k => `<a href="${f[k]}" target="_blank">${k.replace('Png', '')}</a>`).join(' · ')}</span>
+    </td></tr>`);
   }).join('');
   return `<!DOCTYPE html><html lang="pl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Raport formularzy ${esc(CODE)}</title>
-<style>body{font-family:system-ui,Arial,sans-serif;background:#f8fafc;margin:0;color:#0f172a}header{background:#0f172a;color:#fff;padding:14px 18px}
-main{max-width:1100px;margin:0 auto;padding:14px}table{width:100%;border-collapse:collapse;background:#fff;font-size:13.5px}
-th,td{border:1px solid #e2e8f0;padding:8px;vertical-align:top}.badge{display:inline-block;padding:3px 9px;border-radius:99px;font-size:12px;font-weight:700;color:#fff}
-.b-ok{background:#16a34a}.b-err{background:#dc2626}.b-wait{background:#ca8a04}.b-none{background:#64748b}
-.mailbox{background:#fff;border:1px solid #e2e8f0;border-left:5px solid #64748b;border-radius:8px;padding:9px 12px;margin-bottom:12px;font-size:13.5px}
-.m-ok{border-left-color:#16a34a}.m-err{border-left-color:#dc2626}
-.code{font-family:Consolas,monospace;background:#0f172a;color:#a5f3fc;padding:2px 6px;border-radius:5px;font-size:12px}
-.small{font-size:12px;opacity:.75}.formbox{border-top:1px dashed #cbd5e1;padding:6px 0}.formbox:first-child{border-top:0}</style></head>
-<body><header><h2 style="margin:0">📋 Raport formularzy — ${esc(CODE)} ${DRY ? '(DRY-RUN, nic nie wysłano)' : ''}</h2>
-<div style="font-size:13px;opacity:.8">Stron: ${results.length} • 🟢 ${ok} • 🔴 ${bad} • ${esc(now())} • tryb: ${DRY ? 'dry (bez wysyłki)' : 'REALNA WYSYŁKA z kodem ' + esc(CODE)}</div></header>
-<main>${mailBox}<table><thead><tr><th style="width:22%">Strona</th><th style="width:16%">Wynik</th><th>Formularze (każdy z osobna)</th></tr></thead><tbody>${rows}</tbody></table>
-<p class="small">Legenda: 🟢 OK = komunikat sukcesu / URL sukcesu + brak błędów HTTP · 🔴 BŁĄD = błąd HTTP/komunikat błędu/wyjątek · 🟡 NIEPEWNY/RĘCZNIE/👻 UKRYTY = sprawdź screenshoty lub przetestuj ręcznie (CAPTCHA, popup). ✉️ = potwierdzenie ZWROTNE na skrzynce testowej (dowód „silnik mailowy działa”, NIE dowód „lead doszedł do klubu” — ten wymaga BCC na skrzynkę klubu). Kod HTTP 200 = „serwer przyjął”, NIE dowód dostarczenia e-maila.</p></main></body></html>`;
+<title>Raport formularzy ${esc(CODE)}</title><style>${CSS}</style></head>
+<body><div class="top"><h1>Raport kontroli formularzy — ${esc(CODE)}${DRY ? ' (test próbny)' : ''}</h1>
+<div class="meta">${esc(now())} · tryb: ${DRY ? 'próbny (bez wysyłki)' : 'realna wysyłka z kodem ' + esc(CODE)}</div>
+<div class="chips"><span class="chip">Formularzy: <b>${flat.length}</b></span><span class="chip">Działa: <b>${ok}</b></span><span class="chip">Błędów: <b>${bad}</b></span></div></div>
+<div class="wrap">${mailBox}<div class="card"><table><thead><tr><th style="width:24%">Strona i formularz</th><th style="width:26%">Adres</th><th>Wynik i szczegóły</th></tr></thead><tbody>${rows}</tbody></table></div>
+<div class="footer">„Działa" = komunikat sukcesu lub adres sukcesu + brak błędów HTTP. „Błąd" = błąd HTTP, komunikat błędu lub wyjątek. „Do sprawdzenia / Test ręczny / Ukryty" = obejrzyj zrzuty ekranu albo przetestuj ręcznie (CAPTCHA, popup). Potwierdzenie zwrotne dowodzi, że silnik mailowy działa — nie dowodzi, że lead doszedł do klubu (to wymaga dopisania skrzynki testowej jako BCC). Kod HTTP 200 znaczy „serwer przyjął", nie „e-mail dostarczony".</div></div></body></html>`;
 }
 
 function printSite(r) {
