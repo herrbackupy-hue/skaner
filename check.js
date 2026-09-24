@@ -232,6 +232,8 @@ async function testForm(page, site, form, idx, reqLog) {
   return r;
 }
 
+const CHAT_RE = /cbot|chat-?bot|live-?chat|chatbox|chat-bar|\bsearch\b|szukaj|wyszukiwark/i;
+
 async function testSite(browser, site, persistentCtx) {
   const res = { name: site.name, url: site.url, mail: site.mail || '', checkedAt: now(), forms: [], verdict: 'BLAD', detail: '' };
   let ctx, page;
@@ -262,13 +264,17 @@ async function testSite(browser, site, persistentCtx) {
     await dismissCookies(page);
 
     // KROK 1: spis wszystkich widocznych formularzy (sama strona, bez wysylki)
-    const plan = (await visibleForms(page)).map((f, i) => ({ index: i, heading: f.heading, id: f.id, action: f.action, method: f.method, fields: f.fields, hasCaptcha: f.hasCaptcha }));
+    const plan = (await visibleForms(page)).map((f, i) => ({ index: i, heading: f.heading, id: f.id, cls: f.cls, action: f.action, method: f.method, fields: f.fields, hasCaptcha: f.hasCaptcha }));
     res.formsFound = plan.length;
     if (!plan.length) { res.verdict = 'BLAD'; res.detail = 'Nie znaleziono widocznego formularza <form> na stronie.'; return res; }
 
     // KROK 2: kazdy formularz testujemy na SWIEZO zaladowanej stronie
     // (unikamy zastałych uchwytów po nawigacji i "sukcesów" z poprzedniego formularza)
     for (const p of plan) {
+      if (CHAT_RE.test(((p.cls || '') + ' ' + (p.id || '')))) {
+        res.forms.push({ ...p, filled: [], verdict: 'POMINIETY', detail: `Widget czatu/wyszukiwarki (${p.cls || p.id}) - to nie jest formularz kontaktowy, pominieto.` });
+        continue;
+      }
       if (ONLY_FORM && p.index + 1 !== ONLY_FORM) {
         res.forms.push({ ...p, filled: [], verdict: 'POMINIETY', detail: `Pominieto przez --form=${ONLY_FORM}.` });
         continue;
