@@ -271,10 +271,7 @@ async function testSite(browser, site, persistentCtx) {
     // KROK 2: kazdy formularz testujemy na SWIEZO zaladowanej stronie
     // (unikamy zastałych uchwytów po nawigacji i "sukcesów" z poprzedniego formularza)
     for (const p of plan) {
-      if (CHAT_RE.test(((p.cls || '') + ' ' + (p.id || '')))) {
-        res.forms.push({ ...p, filled: [], verdict: 'POMINIETY', detail: `Widget czatu/wyszukiwarki (${p.cls || p.id}) - to nie jest formularz kontaktowy, pominieto.` });
-        continue;
-      }
+      if (CHAT_RE.test(((p.cls || '') + ' ' + (p.id || '')))) continue; // czat/wyszukiwarka: w ogole nie pokazuj w raporcie
       if (ONLY_FORM && p.index + 1 !== ONLY_FORM) {
         res.forms.push({ ...p, filled: [], verdict: 'POMINIETY', detail: `Pominieto przez --form=${ONLY_FORM}.` });
         continue;
@@ -303,7 +300,8 @@ async function testSite(browser, site, persistentCtx) {
       await page.waitForTimeout(1000);
     }
     const v = res.forms.map(f => f.verdict);
-    if (v.includes('BLAD')) { res.verdict = 'BLAD'; res.detail = 'Co najmniej jeden formularz zakonczyl sie bledem.'; }
+    if (!res.forms.length && plan.length) { res.verdict = 'NIEPEWNY'; res.detail = 'Na stronie jest tylko widget czatu/wyszukiwarki - nie znaleziono formularza kontaktowego.'; }
+    else if (v.includes('BLAD')) { res.verdict = 'BLAD'; res.detail = 'Co najmniej jeden formularz zakonczyl sie bledem.'; }
     else if (v.includes('NIEPEWNY')) { res.verdict = 'NIEPEWNY'; res.detail = 'Wymaga rzutu oka na screenshoty.'; }
     else if (v.includes('RECZNIE') || v.includes('UKRYTY')) { res.verdict = 'RECZNIE'; res.detail = 'Formularze z CAPTCHA / ukryte (popup) do testu recznego.'; }
     else if (v.includes('DRY')) { res.verdict = 'DRY'; res.detail = 'Tryb probny.'; }
@@ -349,7 +347,7 @@ function buildReport(results, mail) {
 
 function printSite(r) {
   const icon = { OK: '🟢', BLAD: '🔴', NIEPEWNY: '🟡', RECZNIE: '🟡', UKRYTY: '👻', DRY: '⚪', POMINIETY: '⏭' }[r.verdict] || '❓';
-  console.log(`   ${icon} ${r.verdict} — formularzy: ${r.formsFound ?? r.forms.length} — ${r.detail}`);
+  console.log(`   ${icon} ${r.verdict} — formularzy: ${r.forms.length} — ${r.detail}`);
   r.forms.forEach(f => console.log(`      - form #${f.index + 1}: ${f.verdict} (${(f.filled || []).length} pol, CAPTCHA:${f.hasCaptcha ? 'TAK' : 'nie'})`));
 }
 
