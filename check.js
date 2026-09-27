@@ -159,7 +159,10 @@ async function fillForm(page, form) {
       }
       if (type === 'checkbox') {
         const required = await el.evaluate(e => e.required);
-        if (!required && MARKETING_RE.test(hay)) continue; // zgody marketingowe pomijamy
+        // Zgoda RODO / polityka prywatności (np. ps-consent na alphafitness.pl) jest
+        // wymagana do wysyłki — zawsze zaznacz, nawet gdyby nazwa przypominała marketing.
+        const isPrivacy = /ps-consent|prywatno|privacy|rodo|zgod.*polityk/i.test(hay);
+        if (!required && !isPrivacy && MARKETING_RE.test(hay)) continue; // zgody marketingowe pomijamy
         await el.check({ force: true }).catch(() => {});
         filled.push(`check:${meta.name || meta.id || meta.label.slice(0, 20)}`);
         continue;
@@ -170,10 +173,10 @@ async function fillForm(page, form) {
         if (!anyChecked) { await el.check({ force: true }).catch(() => {}); filled.push(`radio:${nm}`); }
         continue;
       }
-      if (type === 'email' || /e-?mail/.test(hay)) { await el.fill(EMAIL_OVERRIDE || TEST_EMAIL); filled.push('email' + (EMAIL_OVERRIDE ? '(override)' : '')); }
-      else if (type === 'tel' || /telefon|phone|tel\./.test(hay)) { await el.fill(PHONE_OVERRIDE || TEST_PHONE); filled.push('tel' + (PHONE_OVERRIDE ? '(override)' : '')); }
-      else if (tag === 'textarea' || /wiadomo|message|tresc|opis|pytanie|cel|uwag/.test(hay)) { await el.fill(TEST_MSG); filled.push('msg'); }
-      else if (/imie|name|nazwisko|imie i nazwisko/.test(hay)) { await el.fill(NAME_OVERRIDE || TEST_NAME); filled.push('name' + (NAME_OVERRIDE ? '(override)' : '')); }
+      if (type === 'email' || /e-?mail|ps-email/.test(hay)) { await el.fill(EMAIL_OVERRIDE || TEST_EMAIL); filled.push('email' + (EMAIL_OVERRIDE ? '(override)' : '')); }
+      else if (type === 'tel' || /telefon|phone|tel|ps-phone/.test(hay)) { await el.fill(PHONE_OVERRIDE || TEST_PHONE); filled.push('tel' + (PHONE_OVERRIDE ? '(override)' : '')); }
+      else if (tag === 'textarea' || /wiadomo|message|contact-message|tresc|opis|pytanie|cel|uwag/.test(hay)) { await el.fill(TEST_MSG); filled.push('msg'); }
+      else if (/imie|name|nazwisko|ps-name|imie i nazwisko/.test(hay)) { await el.fill(NAME_OVERRIDE || TEST_NAME); filled.push('name' + (NAME_OVERRIDE ? '(override)' : '')); }
       else { await el.fill('TEST ' + CODE); filled.push(`text:${meta.name || meta.id || 'pole'}`); }
     } catch { /* pole nie do wypelnienia */ }
   }
@@ -217,16 +220,39 @@ async function testForm(page, site, form, idx, reqLog) {
   r.requests = newReqs.map(x => `${x.method} ${x.status} ${x.url.slice(0, 110)}`);
   r.badStatus = newReqs.some(x => x.status >= 400);
   let bodyText = '';
-  try { bodyText = (await page.evaluate(() => document.body.innerText)).slice(0, 4000); } catch { bodyText = '(brak dostepu do tresci)'; }
+  // Strona Alpha jest długa (hero/strefy/galeria/kontakt na dole) - nie ucinaj do 4000 znaków,
+  // bo potwierdzenie AJAX byłoby poza zakresem.
+  try { bodyText = (await page.evaluate(() => document.body.innerText)).slice(0, 15000); } catch { bodyText = '(brak dostepu do tresci)'; }
   r.successHit = SUCCESS_RE.test(bodyText);
   r.errorHit = ERROR_RE.test(bodyText);
+  // Dedykowana detekcja formularzy AJAX (alphafitness.pl: #contactForm -> fetch send_email.php
+  // -> ukrycie formularza + pokazanie #formSuccess, błędy w #formStatus).
+  let ajax = { successVisible: false, successText: '', statusText: '', formHidden: false };
+  try {
+    ajax = await page.evaluate(() => {
+      const vis = el => !!el && !el.hidden && el.getBoundingClientRect().width > 0 && el.getBoundingClientRect().height > 0;
+      const ok = document.querySelector('#formSuccess');
+      const st = document.querySelector('#formStatus');
+      const fm = document.querySelector('#contactForm');
+      return {
+        successVisible: vis(ok),
+        successText: (ok ? ok.innerText : '').slice(0, 300),
+        statusText: (st ? st.innerText : '').slice(0, 300),
+        formHidden: !!fm && (fm.hidden || getComputedStyle(fm).display === 'none'),
+      };
+    });
+  } catch {}
+  r.ajaxSuccess = ajax.successVisible;
+  if (ajax.statusText) r.statusText = ajax.statusText;
   r.afterPng = tag + '-po.png';
   r.finalUrl = page.url();
   r.urlSuccess = URL_SUCCESS_RE.test(r.finalUrl);
   await page.screenshot({ path: path.join(OUTDIR, r.afterPng), fullPage: false }).catch(() => {});
 
-  if ((r.successHit || r.urlSuccess) && !r.errorHit && !r.badStatus) { r.verdict = 'OK'; r.detail = r.urlSuccess && !r.successHit ? 'Przekierowanie na URL sukcesu (' + r.finalUrl.slice(-60) + ').' : 'Wykryto komunikat sukcesu, brak bledow HTTP.'; }
-  else if (r.errorHit || r.badStatus) { r.verdict = 'BLAD'; r.detail = (r.badStatus ? 'Zadanie HTTP ≥400. ' : '') + (r.errorHit ? 'Wykryto komunikat bledu na stronie.' : ''); }
+  const ajaxOk = ajax.successVisible || (ajax.formHidden && /dzi[eę]kuj|wysłan|odezwiemy/i.test(ajax.successText + ' ' + bodyText));
+  const ajaxErr = ajax.statusText && ERROR_RE.test(ajax.statusText);
+  if ((r.successHit || r.urlSuccess || ajaxOk) && !r.errorHit && !r.badStatus && !ajaxErr) { r.verdict = 'OK'; r.detail = ajaxOk ? 'Formularz AJAX: widoczne potwierdzenie #formSuccess (formularz ukryty po wysyłce).' : (r.urlSuccess && !r.successHit ? 'Przekierowanie na URL sukcesu (' + r.finalUrl.slice(-60) + ').' : 'Wykryto komunikat sukcesu, brak bledow HTTP.'); }
+  else if (r.errorHit || r.badStatus || ajaxErr) { r.verdict = 'BLAD'; r.detail = (r.badStatus ? 'Zadanie HTTP ≥400. ' : '') + (ajaxErr ? `Formularz zgłasza: "${ajax.statusText}".` : '') + (r.errorHit && !ajaxErr ? 'Wykryto komunikat bledu na stronie.' : ''); }
   else if (form.hasCaptcha) { r.verdict = 'RECZNIE'; r.detail = 'CAPTCHA na formularzu - wymaga recznego testu w trybie --headed.'; }
   else { r.verdict = 'NIEPEWNY'; r.detail = 'Brak jednoznacznego sukcesu/bledu - sprawdz screenshot „po”.'; }
   return r;
